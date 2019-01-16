@@ -14,6 +14,9 @@ MouseListener{
 	private ShapePanel panel;
 	protected JRadioButton upButton,downButton;
 	protected textViewer txt;
+	protected Square s = new Square(100,100,0,200, 200);
+	protected Triangle t = new Triangle(350,300,0,200, 200);
+	
 	public Controller(DrawingModel model,ShapePanel panel,textViewer txt) {
 		this.model = model;
 		this.panel = panel;
@@ -63,7 +66,7 @@ MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public void componentResized(ComponentEvent e) {
 	

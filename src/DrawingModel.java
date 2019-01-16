@@ -1,58 +1,54 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 // A drawing model to add shapes and view and get shapes if needed
 public class DrawingModel {
-	protected ArrayList<Shape> shapes = new ArrayList<Shape>();
-	private ArrayList<DrawingView> views = new ArrayList<DrawingView>();
-	protected Square s = new Square(100,100,1,200, 200);
-	protected Triangle t = new Triangle(350,300,1,200, 200);
+	protected Queue<Shape> shapes = new LinkedList<Shape>();
+	private DrawingView view;
+	private int level = 0;
+	
 	
 	public void createShapes(ShapePanel p){
 		
-	
-		this.addView(p);
-		
-	
+		view = p;
+		this.updateView();
 	}
 	
 	public void levelUp(){
 		
-		removeShape();
+		if(level == 0) {
+			addShape(new Square(100,100,0,200, 200));
+		    addShape(new Triangle(400,300,0,200, 200));
+		    level++;
+		    return;
+		}
+		//number of expected shapes for the current level
+		int count = (int) (Math.pow(3,level) + Math.pow(5, level));
+
+		//increase the level to goal level
+		level++;
 		
-		s.addLevel(s);
-		t.addLevel(t);
-		if (s.level != 0 && t.level!=0){
-			for (Shape s: s.shapes){
-				addShape(s.getShape());
-				}
-			for (Shape t: t.shapes){
-				addShape(t.getShape());
+		//add level to shapes and add them to view queue
+		while (count > 0 ) {
+			Shape cur = shapes.remove();
+			for (Shape sh : cur.addLevel(cur, level)) {
+				if(sh.getLevel() == level) addShape(sh);
 			}
-			}
-			else{
-				addShape(s.getShape());
-				addShape(t.getShape());
-			}
+			count--;
+		}
 		
 	}
 	
 	public void levelDown(){
-		removeShape();
 		
-		s.removeLevel(s);
-		t.removeLevel(t);
-		if (s.level != 0 && t.level!=0){
-			for (Shape s: s.shapes){
-				addShape(s.getShape());
-				}
-			for (Shape t: t.shapes){
-				addShape(t.getShape());
-			}
-			}
-			else{
-				addShape(s.getShape());
-				addShape(t.getShape());
-			}
+		int goalLevel = level-1;
+		level = 0 ;
+		removeShape();
+		for (int i = 0 ; i < goalLevel;i++) {
+			levelUp();
+		}
 		
 	}
 	
@@ -69,19 +65,9 @@ public class DrawingModel {
 	}
 	
 	//add and update new views
-	public void updateView(DrawingView view){
+	public void updateView(){
 		
-		for (DrawingView v : views){
-			views.add(view);
-			v.update(this);
-		}
+		view.update(this);
 	}
 
-	// Adds a new view to the model
-	public void addView(DrawingView view) {
-		
-		views.add(view);
-		view.update(this);
-		
-	}
 }

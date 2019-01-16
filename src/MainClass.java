@@ -24,7 +24,7 @@ public class MainClass {
 		//textViewer
 		textViewer txt = new textViewer();
 		
-		
+	
 		//Button(s)
 		JButton button = new JButton("Draw Levels");
 		JPanel southPanel = new JPanel();

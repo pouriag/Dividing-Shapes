@@ -1,10 +1,11 @@
 import java.awt.Color;
+import java.util.List;
 import java.util.Random;
 
 public abstract class AbstractShape implements Shape{
 	
 	//to use later for Coordinations
-	protected Shape[] shapes = null;
+	
 	protected int x,y,height,width,level ;
 	protected int [] xPoints,yPoints;
 
@@ -23,9 +24,9 @@ public abstract class AbstractShape implements Shape{
 	public AbstractShape(int x, int y, int level,int height, int width,Color Color) {
 	
 	}
-
+	
 	public String toString () {
 		return ("X: "+ x+", Y: "+ y  + ", Color = "+ color);
 	}
-	
+
 }

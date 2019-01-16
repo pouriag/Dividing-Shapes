@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.List;
 
 /*
  * an interface for shapes with all the data
@@ -10,14 +11,13 @@ public interface Shape {
 	int setLevel(int i);
 	//needed methods 
 	Color getColor();
-	Shape getShape();
+	List<Shape> getShapes();
 	int getX();
 	int getY();
 	int getHeight();
 	int getWidth();
 	int getLevel();
-	void addLevel(Shape s);
-	void removeLevel(Shape s);
+	List<Shape> addLevel(Shape s, int l);
 	void paint(Graphics g);
 	
 }

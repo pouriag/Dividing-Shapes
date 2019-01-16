@@ -1,14 +1,16 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Square extends AbstractShape {
 	
-
+	protected List<Shape> shapes = new ArrayList<Shape>();
 	public Square(int x, int y, int level,int height, int width) {
 		
 		
 		super(x, y, level, height, width, color);
-		shapes = new Shape [5];
+		this.level = level;
 		this.x = x;
 		this.y = y;
 		this.height = height;
@@ -26,7 +28,7 @@ public class Square extends AbstractShape {
 
 
 	}
-
+	
 	@Override
 	public void paint(Graphics g) {
 		g.fillPolygon(xPoints,yPoints,4);
@@ -35,16 +37,8 @@ public class Square extends AbstractShape {
 
 
 	@Override
-	public Shape getShape() {
-		
-		for (Shape s : shapes){
-			if (s!= null){
-				
-				return s;
-			}	
-		}
-		this.setLevel(this.getLevel()+1);
-		return this;
+	public List<Shape> getShapes() {
+		return shapes;
 	}
 	
 	@Override
@@ -66,56 +60,23 @@ public class Square extends AbstractShape {
 		return this.level;
 	}
 
-	@Override
-	public void addLevel(Shape s) {
+	
+	public List<Shape> addLevel(Shape s, int level) {
 		
+		if (s.getLevel() == level ) {
+			shapes.add(s);
+			return shapes;
+		}		
+		addLevel(new Square (s.getX(),s.getY(),s.getLevel()+1,s.getHeight()/3,s.getWidth()/3),level);
+		addLevel(new Square (s.getX()+2*s.getWidth()/3,s.getY(),s.getLevel()+1,s.getHeight()/3,s.getWidth()/3),level);
+		addLevel(new Square (s.getX()+s.getHeight()/3,s.getY()+s.getHeight()/3,s.getLevel()+1,s.getHeight()/3,s.getWidth()/3),level);
+		addLevel(new Square (s.getX(),s.getY()+2*s.getHeight()/3,s.getLevel()+1,s.getHeight()/3,s.getWidth()/3),level);
+		addLevel(new Square (s.getX()+2*s.getWidth()/3,s.getY()+2*s.getHeight()/3,s.getLevel()+1,s.getHeight()/3,s.getWidth()/3),level);
 		
-		System.out.println(s.getLevel());
-		if (level == 0) return;
-		if (level == 1){
-			
-			shapes [0] = new Square (s.getX(),s.getY(),s.getLevel()+1,s.getHeight()/3,s.getWidth()/3);
-			shapes [1] = new Square (s.getX()+2*s.getWidth()/3,s.getY(),s.getLevel()+1,s.getHeight()/3,s.getWidth()/3);
-			shapes [2] = new Square (s.getX()+s.getHeight()/3,s.getY()+s.getHeight()/3,s.getLevel()+1,s.getHeight()/3,s.getWidth()/3);
-			shapes [3] = new Square (s.getX(),s.getY()+2*s.getHeight()/3,s.getLevel()+1,s.getHeight()/3,s.getWidth()/3);
-			shapes [4] = new Square (s.getX()+2*s.getWidth()/3,s.getY()+2*s.getHeight()/3,s.getLevel()+1,s.getHeight()/3,s.getWidth()/3);
-			s.setLevel(s.getLevel()+1);
-			
-		}
-		else {
-			addLevel(shapes[0]);
-			addLevel(shapes[1]);
-			addLevel(shapes[2]);
-			addLevel(shapes[3]);
-			addLevel(shapes[4]);
-		}
-	}
+		return shapes;
 
-	@Override
-	public void removeLevel(Shape s){
-		
-		this.level = s.getLevel();
-		if (level == 0) return;
-		if (level == 1){
-			
-			shapes [0] = new Square (s.getX(),s.getY(),s.getLevel()-1,s.getHeight()*3,s.getWidth()*3);
-			shapes [1] = new Square (s.getX()+s.getWidth()*3/2,s.getY(),s.getLevel()-1,s.getHeight()*3,s.getWidth()*3);
-			shapes [2] = new Square (s.getX()+s.getHeight()*3,s.getY()+s.getHeight()*3,s.getLevel()-1,s.getHeight()*3,s.getWidth()*3);
-			shapes [3] = new Square (s.getX(),s.getY()+s.getHeight()*3/2,s.getLevel()-1,s.getHeight()*3,s.getWidth()*3);
-			shapes [4] = new Square (s.getX()+s.getWidth()*3/2,s.getY()+s.getHeight()*3/2,s.getLevel()-1,s.getHeight()*3,s.getWidth()*3);
-			
-			
-			
-		}
-		else {
-			
-			removeLevel(shapes[0]);
-			removeLevel(shapes[1]);
-			removeLevel(shapes[2]);
-			removeLevel(shapes[3]);
-			removeLevel(shapes[4]);
-		}
 	}
+	
 
 	public String toString () {
 		return super.toString()+" level:" + level + ". ";
